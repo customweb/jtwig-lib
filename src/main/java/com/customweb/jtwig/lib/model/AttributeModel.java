@@ -1,42 +1,21 @@
 package com.customweb.jtwig.lib.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.lyncode.jtwig.addons.AddonModel;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 import com.lyncode.jtwig.expressions.model.Constant;
 import com.lyncode.jtwig.expressions.model.Variable;
 import com.lyncode.jtwig.parser.model.JtwigPosition;
 
-public abstract class AttributeModel<T extends AddonModel<?>> extends AddonModel<T> {
+public abstract class AttributeModel<T extends AddonModel<T>> extends AddonModel<T> {
 
-	Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+	private AttributeCollection<T> attributeCollection;
 	
-	public Attribute getAttribute(String key) {
-		return this.attributes.get(key.toLowerCase());
+	public AttributeModel(AttributeCollection<T> attributeCollection) {
+		this.attributeCollection = attributeCollection;
 	}
 	
-	public Collection<Attribute> getAttributes() {
-		return this.attributes.values();
-	}
-	
-	public Collection<Attribute> getDynamicAttributes() {
-		List<Attribute> dynamicAttributes = new ArrayList<Attribute>();
-		for (Attribute attribute : this.attributes.values()) {
-			if (attribute instanceof DynamicAttribute) {
-				dynamicAttributes.add(attribute);
-			}
-		}
-		return dynamicAttributes;
-	}
-	
-	public AttributeModel<T> addAttribute(Attribute attribute) {
-		attributes.put(attribute.getKey(), attribute);
-		return this;
+	public AttributeCollection<T> getAttributeCollection() {
+		return this.attributeCollection;
 	}
 	
 	public static class Attribute {

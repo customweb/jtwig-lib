@@ -18,7 +18,7 @@ public abstract class AttributeAddon<T extends AttributeModel<?>> extends Addon 
 	@SuppressWarnings("unchecked")
 	public Rule attribute(String key) {
 		return Sequence(
-			IgnoreCase(key).label('\'' + key.toLowerCase() + '\''),
+			IgnoreCase(key),
 			basicParser().symbol(JtwigSymbol.ATTR),
 			FirstOf(
 				string(basicParser().symbol(JtwigSymbol.QUOTE)),
@@ -33,7 +33,7 @@ public abstract class AttributeAddon<T extends AttributeModel<?>> extends Addon 
 	@SuppressWarnings("unchecked")
 	public Rule variableAttribute(String key) {
 		return Sequence(
-			IgnoreCase(key).label('\'' + key.toLowerCase() + '\''),
+			IgnoreCase(key),
 			basicParser().symbol(JtwigSymbol.ATTR),
 			FirstOf(
 				string(basicParser().symbol(JtwigSymbol.QUOTE)),
