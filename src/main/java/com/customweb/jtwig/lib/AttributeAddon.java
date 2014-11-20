@@ -1,82 +1,86 @@
 package com.customweb.jtwig.lib;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 
+import com.customweb.jtwig.lib.model.AttributeDefinition;
 import com.customweb.jtwig.lib.model.AttributeModel;
 import com.lyncode.jtwig.addons.Addon;
 import com.lyncode.jtwig.expressions.model.Constant;
 import com.lyncode.jtwig.parser.config.ParserConfiguration;
 import com.lyncode.jtwig.parser.model.JtwigSymbol;
+import com.lyncode.jtwig.parser.parboiled.JtwigBasicParser;
 import com.lyncode.jtwig.resource.JtwigResource;
 
-public abstract class AttributeAddon<T extends AttributeModel<?>> extends Addon {
+public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon {
 
-	public AttributeAddon(JtwigResource resource, ParserConfiguration configuration) {
+	public AttributeAddon(JtwigResource resource,
+			ParserConfiguration configuration) {
 		super(resource, configuration);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Rule attribute(String key) {
-		return Sequence(
-			IgnoreCase(key),
-			basicParser().symbol(JtwigSymbol.ATTR),
-			FirstOf(
-				string(basicParser().symbol(JtwigSymbol.QUOTE)),
-				string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))
-			),
-			expressionParser().push(new Constant<>(basicParser().pop())),
-			action(((T)expressionParser().peek(2)).addAttribute(new T.Attribute(key, expressionParser().pop(0)))),
-			basicParser().spacing()
-        );
+
+	abstract protected String keyword();
+
+	@Override
+	public java.lang.String beginKeyword() {
+		return keyword();
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Rule variableAttribute(String key) {
-		return Sequence(
-			IgnoreCase(key),
-			basicParser().symbol(JtwigSymbol.ATTR),
-			FirstOf(
-				string(basicParser().symbol(JtwigSymbol.QUOTE)),
-				string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))
-			),
-			basicParser().identifier(),
-			expressionParser().push(new Constant<>(basicParser().pop())),
-			action(((T)expressionParser().peek(2)).addAttribute(new T.VariableAttribute(key, expressionParser().pop(0), currentPosition()))),
-			basicParser().spacing()
-        );
+
+	@Override
+	public java.lang.String endKeyword() {
+		return "end" + keyword();
+	}
+
+	@Override
+	abstract public T instance();
+
+	@Override
+	public Rule startRule() {
+		return Optional(Sequence(push(instance()), OneOrMore(attributeRules()),
+				validate()));
 	}
 
 	@SuppressWarnings("unchecked")
-	public Rule dynamicAttribute() {
-		return Sequence(
-			basicParser().identifier(),
-			expressionParser().push(new Constant<>(match())),
-			basicParser().symbol(JtwigSymbol.ATTR),
-			FirstOf(
-				string(basicParser().symbol(JtwigSymbol.QUOTE)),
-				string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))
-			),
-			expressionParser().push(new Constant<>(basicParser().pop())),
-			action(((T)expressionParser().peek(2)).addAttribute(new T.DynamicAttribute(expressionParser().pop(1), expressionParser().pop(0)))),
-			basicParser().spacing()
-        );
+	protected Rule validate() {
+		return Sequence(JtwigBasicParser.EMPTY, action(((T) expressionParser()
+				.peek(0)).validate()));
 	}
-	
-	protected Rule string(Rule delimiter) {
+
+	protected Rule attributeRules() {
+		List<Rule> rules = new ArrayList<Rule>();
+		for (AttributeDefinition definition : instance()
+				.getAttributeDefinitions()) {
+			rules.add(attribute(definition));
+		}
+		return FirstOf(rules.toArray());
+	}
+
+	@SuppressWarnings("unchecked")
+	public Rule attribute(AttributeDefinition definition) {
 		return Sequence(
-			delimiter,
-			basicParser().push(""),
-			OneOrMore(
-				Sequence(
-					TestNot(
-							delimiter
-					),
-					ANY,
-					basicParser().push(basicParser().pop() + match())
-				)
-            ),
-            delimiter
-		);
+				definition.getKeyRule(this),
+				expressionParser().push(new Constant<>(match())),
+				basicParser().symbol(JtwigSymbol.ATTR),
+				FirstOf(string(basicParser().symbol(JtwigSymbol.QUOTE)),
+						string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))),
+				expressionParser().push(new Constant<>(basicParser().pop())),
+				action(((T) expressionParser().peek(2))
+						.getAttributeCollection().addAttribute(
+								definition.getAttributeInstance(expressionParser().pop(1),
+										expressionParser().pop(0), this))),
+				basicParser().spacing());
+	}
+
+	public Rule string(Rule delimiter) {
+		return Sequence(
+				delimiter,
+				basicParser().push(""),
+				OneOrMore(Sequence(TestNot(delimiter), BaseParser.ANY,
+						basicParser().push(basicParser().pop() + match()))),
+				delimiter);
 	}
 
 }

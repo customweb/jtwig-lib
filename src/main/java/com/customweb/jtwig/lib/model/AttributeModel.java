@@ -1,76 +1,33 @@
 package com.customweb.jtwig.lib.model;
 
-import com.lyncode.jtwig.addons.AddonModel;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.expressions.model.Constant;
-import com.lyncode.jtwig.expressions.model.Variable;
-import com.lyncode.jtwig.parser.model.JtwigPosition;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class AttributeModel<T extends AddonModel<T>> extends AddonModel<T> {
+import com.lyncode.jtwig.addons.AddonModel;
+
+public abstract class AttributeModel<T extends AttributeModel<T>> extends
+		AddonModel<T> {
 
 	private AttributeCollection<T> attributeCollection;
-	
-	public AttributeModel(AttributeCollection<T> attributeCollection) {
-		this.attributeCollection = attributeCollection;
+
+	public AttributeModel() {
+		this.attributeCollection = new AttributeCollection<T>();
 	}
-	
+
 	public AttributeCollection<T> getAttributeCollection() {
 		return this.attributeCollection;
 	}
-	
-	public static class Attribute {
-		private String key;
-		private String value;
-		
-		@SuppressWarnings("unchecked")
-		public Attribute(CompilableExpression key, CompilableExpression value) {
-			this((String) ((Constant<String>) key).as(String.class).toLowerCase(), value);
+
+	public AttributeModel<T> validate() {
+		for (AttributeDefinition definition : this.getAttributeDefinitions()) {
+			definition.validate(this.getAttributeCollection());
 		}
-		
-		@SuppressWarnings("unchecked")
-		public Attribute(String key, CompilableExpression value) {
-			this.key = key.toLowerCase();
-			this.value = (String) ((Constant<String>) value).as(String.class);
-		}
-		
-		public String getKey() {
-			return key;
-		}
-		
-		public String getValue() {
-			return value;
-		}
-		
-		public String toString() {
-			return getKey() + "=\"" + getValue() + "\"";
-		}
+		return this;
 	}
-	
-	public static class DynamicAttribute extends Attribute {
-		public DynamicAttribute(CompilableExpression key,
-				CompilableExpression value) {
-			super(key, value);
-		}
+
+	public List<AttributeDefinition> getAttributeDefinitions() {
+		List<AttributeDefinition> definitions = new ArrayList<AttributeDefinition>();
+		definitions.add(new DynamicAttributeDefinition());
+		return definitions;
 	}
-	
-	public static class VariableAttribute extends Attribute {
-		private Variable variable;
-		
-		public VariableAttribute(CompilableExpression key,
-				CompilableExpression value, JtwigPosition position) {
-			super(key, value);
-			this.variable = new Variable(position, this.getValue());
-		}
-		
-		public VariableAttribute(String key,
-				CompilableExpression value, JtwigPosition position) {
-			super(key, value);
-			this.variable = new Variable(position, this.getValue());
-		}
-		
-		public Variable getVariable() {
-			return this.variable;
-		}
-	}
-	
 }
