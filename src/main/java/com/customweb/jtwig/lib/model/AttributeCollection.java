@@ -28,8 +28,7 @@ public class AttributeCollection<T extends AttributeModel<T>> {
 	}
 
 	public boolean hasAttribute(String key, Class<?> type) {
-		return this.hasAttribute(key)
-				&& type.isInstance(this.getAttribute(key));
+		return this.hasAttribute(key) && type.isInstance(this.getAttribute(key));
 	}
 
 	public Collection<Attribute> getAttributes() {

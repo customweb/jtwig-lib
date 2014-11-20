@@ -9,8 +9,7 @@ abstract public class Attribute {
 
 	@SuppressWarnings("unchecked")
 	public Attribute(CompilableExpression key, CompilableExpression value) {
-		this((String) ((Constant<String>) key).as(String.class).toLowerCase(),
-				value);
+		this((String) ((Constant<String>) key).as(String.class).toLowerCase(), value);
 	}
 
 	@SuppressWarnings("unchecked")

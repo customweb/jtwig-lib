@@ -12,20 +12,17 @@ public class DynamicAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> void validate(
-			AttributeCollection<T> attributes) {
+	public <T extends AttributeModel<T>> void validate(AttributeCollection<T> attributes) {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Rule getKeyRule(
-			AttributeAddon<T> parser) {
+	public <T extends AttributeModel<T>> Rule getKeyRule(AttributeAddon<T> parser) {
 		return parser.basicParser().identifier();
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Attribute getAttributeInstance(
-			CompilableExpression key, CompilableExpression value,
-			AttributeAddon<T> parser) {
+	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
+			CompilableExpression value) {
 		return new DynamicAttribute(key, value);
 	}
 

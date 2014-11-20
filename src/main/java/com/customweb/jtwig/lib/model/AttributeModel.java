@@ -5,8 +5,7 @@ import java.util.List;
 
 import com.lyncode.jtwig.addons.AddonModel;
 
-public abstract class AttributeModel<T extends AttributeModel<T>> extends
-		AddonModel<T> {
+public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonModel<T> {
 
 	private AttributeCollection<T> attributeCollection;
 

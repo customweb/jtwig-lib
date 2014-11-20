@@ -19,33 +19,23 @@ public class VariableAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> void validate(
-			AttributeCollection<T> attributes) {
+	public <T extends AttributeModel<T>> void validate(AttributeCollection<T> attributes) {
 		if (this.isMandatory()) {
-			if (!attributes
-					.hasAttribute(this.getKey(), VariableAttribute.class)) {
-				throw new RuntimeException("The attribute '" + this.getKey()
-						+ "' is mandatory.");
-			} else if (attributes.getAttribute(this.getKey(),
-					VariableAttribute.class).getVariable() == null) {
-				throw new RuntimeException("The variable '"
-						+ attributes.getAttribute(this.getKey()).getValue()
-						+ "' has not been set.");
+			if (!attributes.hasAttribute(this.getKey(), VariableAttribute.class)) {
+				throw new RuntimeException("The attribute '" + this.getKey() + "' is mandatory.");
 			}
 		}
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Rule getKeyRule(
-			AttributeAddon<T> parser) {
+	public <T extends AttributeModel<T>> Rule getKeyRule(AttributeAddon<T> parser) {
 		return parser.IgnoreCase(this.getKey());
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Attribute getAttributeInstance(
-			CompilableExpression key, CompilableExpression value,
-			AttributeAddon<T> parser) {
-		return new VariableAttribute(key, value, parser.currentPosition());
+	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
+			CompilableExpression value) {
+		return new VariableAttribute(key, value);
 	}
 
 }

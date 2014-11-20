@@ -17,8 +17,7 @@ import com.lyncode.jtwig.resource.JtwigResource;
 
 public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon {
 
-	public AttributeAddon(JtwigResource resource,
-			ParserConfiguration configuration) {
+	public AttributeAddon(JtwigResource resource, ParserConfiguration configuration) {
 		super(resource, configuration);
 	}
 
@@ -39,20 +38,17 @@ public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon 
 
 	@Override
 	public Rule startRule() {
-		return Optional(Sequence(push(instance()), OneOrMore(attributeRules()),
-				validate()));
+		return Optional(Sequence(push(instance()), OneOrMore(attributeRules()), validate()));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Rule validate() {
-		return Sequence(JtwigBasicParser.EMPTY, action(((T) expressionParser()
-				.peek(0)).validate()));
+		return Sequence(JtwigBasicParser.EMPTY, action(((T) expressionParser().peek(0)).validate()));
 	}
 
 	protected Rule attributeRules() {
 		List<Rule> rules = new ArrayList<Rule>();
-		for (AttributeDefinition definition : instance()
-				.getAttributeDefinitions()) {
+		for (AttributeDefinition definition : instance().getAttributeDefinitions()) {
 			rules.add(attribute(definition));
 		}
 		return FirstOf(rules.toArray());
@@ -67,10 +63,8 @@ public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon 
 				FirstOf(string(basicParser().symbol(JtwigSymbol.QUOTE)),
 						string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))),
 				expressionParser().push(new Constant<>(basicParser().pop())),
-				action(((T) expressionParser().peek(2))
-						.getAttributeCollection().addAttribute(
-								definition.getAttributeInstance(expressionParser().pop(1),
-										expressionParser().pop(0), this))),
+				action(((T) expressionParser().peek(2)).getAttributeCollection().addAttribute(
+						definition.getAttributeInstance(expressionParser().pop(1), expressionParser().pop(0)))),
 				basicParser().spacing());
 	}
 
@@ -78,9 +72,8 @@ public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon 
 		return Sequence(
 				delimiter,
 				basicParser().push(""),
-				OneOrMore(Sequence(TestNot(delimiter), BaseParser.ANY,
-						basicParser().push(basicParser().pop() + match()))),
-				delimiter);
+				ZeroOrMore(Sequence(TestNot(delimiter), BaseParser.ANY,
+						basicParser().push(basicParser().pop() + match()))), delimiter);
 	}
 
 }
