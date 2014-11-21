@@ -2,16 +2,16 @@ package com.customweb.jtwig.lib.model;
 
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 
-public class VariableAttributeDefinition extends NamedAttributeDefinition {
+public class EmptyAttributeDefinition extends NamedAttributeDefinition {
 
-	public VariableAttributeDefinition(String key, boolean mandatory) {
-		super(key, mandatory);
+	public EmptyAttributeDefinition(String key) {
+		super(key, false);
 	}
 
 	@Override
 	public void validate(AttributeCollection attributes) {
 		if (this.isMandatory()) {
-			if (!attributes.hasAttribute(this.getKey(), VariableAttribute.class)) {
+			if (!attributes.hasAttribute(this.getKey(), EmptyAttribute.class)) {
 				throw new RuntimeException("The attribute '" + this.getKey() + "' is mandatory.");
 			}
 		}
@@ -20,7 +20,10 @@ public class VariableAttributeDefinition extends NamedAttributeDefinition {
 	@Override
 	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
 			CompilableExpression value) {
-		return new VariableAttribute(key, value);
+		if (value != null) {
+			throw new RuntimeException("The empty attribute '" + key + "' cannot have a value.");
+		}
+		return new EmptyAttribute(key);
 	}
 
 }

@@ -16,7 +16,7 @@ public abstract class AttributeDefinition {
 		return mandatory;
 	}
 
-	abstract public <T extends AttributeModel<T>> void validate(AttributeCollection<T> attributes);
+	abstract public void validate(AttributeCollection attributes);
 
 	abstract public <T extends AttributeModel<T>> Rule getKeyRule(AttributeAddon<T> parser);
 

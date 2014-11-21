@@ -59,13 +59,16 @@ public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon 
 		return Sequence(
 				definition.getKeyRule(this),
 				expressionParser().push(new Constant<>(match())),
-				basicParser().symbol(JtwigSymbol.ATTR),
-				FirstOf(string(basicParser().symbol(JtwigSymbol.QUOTE)),
-						string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))),
-				expressionParser().push(new Constant<>(basicParser().pop())),
-				action(((T) expressionParser().peek(2)).getAttributeCollection().addAttribute(
-						definition.getAttributeInstance(expressionParser().pop(1), expressionParser().pop(0)))),
-				basicParser().spacing());
+				FirstOf(Sequence(
+						basicParser().symbol(JtwigSymbol.ATTR),
+						FirstOf(string(basicParser().symbol(JtwigSymbol.QUOTE)),
+								string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))),
+						expressionParser().push(new Constant<>(basicParser().pop())),
+						action(((T) expressionParser().peek(2)).getAttributeCollection().addAttribute(
+								definition.getAttributeInstance(expressionParser().pop(1), expressionParser().pop(0))))),
+						action(((T) expressionParser().peek(1)).getAttributeCollection().addAttribute(
+								definition.getAttributeInstance(expressionParser().pop(0), null)))), basicParser()
+						.spacing());
 	}
 
 	public Rule string(Rule delimiter) {

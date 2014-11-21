@@ -19,7 +19,7 @@ public class NamedAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> void validate(AttributeCollection<T> attributes) {
+	public void validate(AttributeCollection attributes) {
 		if (this.isMandatory()) {
 			if (!attributes.hasAttribute(this.getKey(), NamedAttribute.class)) {
 				throw new RuntimeException("The attribute '" + this.getKey() + "' is mandatory.");

@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class AttributeCollection<T extends AttributeModel<T>> {
+public class AttributeCollection {
 
 	Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 	public Attribute getAttribute(String key) {
 		return this.attributes.get(key.toLowerCase());
+	}
+	
+	public ValueAttribute getValueAttribute(String key) {
+		return this.getAttribute(key, ValueAttribute.class);
 	}
 
 	public <S> S getAttribute(String key, Class<S> type) {
@@ -45,7 +49,7 @@ public class AttributeCollection<T extends AttributeModel<T>> {
 		return attributes;
 	}
 
-	public AttributeCollection<T> addAttribute(Attribute attribute) {
+	public AttributeCollection addAttribute(Attribute attribute) {
 		attributes.put(attribute.getKey(), attribute);
 		return this;
 	}

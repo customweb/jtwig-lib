@@ -5,28 +5,21 @@ import com.lyncode.jtwig.expressions.model.Constant;
 
 abstract public class Attribute {
 	private String key;
-	private String value;
 
 	@SuppressWarnings("unchecked")
-	public Attribute(CompilableExpression key, CompilableExpression value) {
-		this((String) ((Constant<String>) key).as(String.class).toLowerCase(), value);
+	public Attribute(CompilableExpression key) {
+		this((String) ((Constant<String>) key).as(String.class).toLowerCase());
 	}
-
-	@SuppressWarnings("unchecked")
-	public Attribute(String key, CompilableExpression value) {
-		this.key = key.toLowerCase();
-		this.value = (String) ((Constant<String>) value).as(String.class);
+	
+	public Attribute(String key) {
+		this.key = key;
 	}
 
 	public String getKey() {
 		return key;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
 	public String toString() {
-		return getKey() + "=\"" + getValue() + "\"";
+		return getKey();
 	}
 }

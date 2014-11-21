@@ -1,19 +1,19 @@
 package com.customweb.jtwig.lib.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import com.lyncode.jtwig.addons.AddonModel;
+import com.lyncode.jtwig.content.api.Renderable;
 
 public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonModel<T> {
 
-	private AttributeCollection<T> attributeCollection;
+	private AttributeCollection attributeCollection;
 
 	public AttributeModel() {
-		this.attributeCollection = new AttributeCollection<T>();
+		this.attributeCollection = new AttributeCollection();
 	}
 
-	public AttributeCollection<T> getAttributeCollection() {
+	public AttributeCollection getAttributeCollection() {
 		return this.attributeCollection;
 	}
 
@@ -24,9 +24,34 @@ public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonM
 		return this;
 	}
 
-	public List<AttributeDefinition> getAttributeDefinitions() {
-		List<AttributeDefinition> definitions = new ArrayList<AttributeDefinition>();
-		definitions.add(new DynamicAttributeDefinition());
-		return definitions;
+	public AttributeDefinitionCollection getAttributeDefinitions() {
+		return new AttributeDefinitionCollection();
 	}
+	
+	abstract protected class AbstractAttributeModelCompiled implements Renderable {
+		private final Renderable content;
+		private final AttributeCollection attributeCollection;
+
+		protected AbstractAttributeModelCompiled(Renderable content, AttributeCollection attributeCollection) {
+			this.content = content;
+			this.attributeCollection = attributeCollection;
+		}
+
+		public Renderable getContent() {
+			return this.content;
+		}
+		
+		public AttributeCollection getAttributeCollection() {
+			return this.attributeCollection;
+		}
+		
+		public String getAttributeValue(String key) {
+			return this.getAttributeCollection().getValueAttribute(key).getValue();
+		}
+		
+		public Collection<DynamicAttribute> getDynamicAttributes() {
+			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
+		}
+	}
+	
 }
