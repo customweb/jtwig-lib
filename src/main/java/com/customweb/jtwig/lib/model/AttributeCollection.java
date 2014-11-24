@@ -14,7 +14,7 @@ public class AttributeCollection {
 	public Attribute getAttribute(String key) {
 		return this.attributes.get(key.toLowerCase());
 	}
-	
+
 	public ValueAttribute getValueAttribute(String key) {
 		return this.getAttribute(key, ValueAttribute.class);
 	}
@@ -28,7 +28,9 @@ public class AttributeCollection {
 	}
 
 	public boolean hasAttribute(String key) {
-		return this.attributes.containsKey(key);
+		return this.attributes.containsKey(key)
+				&& (this.attributes.get(key) instanceof EmptyAttribute || (this.getValueAttribute(key).getValue() != null && !this.getValueAttribute(key)
+						.getValue().isEmpty()));
 	}
 
 	public boolean hasAttribute(String key, Class<?> type) {
