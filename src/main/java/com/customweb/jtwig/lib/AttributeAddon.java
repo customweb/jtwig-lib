@@ -38,7 +38,7 @@ public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon 
 
 	@Override
 	public Rule startRule() {
-		return Optional(Sequence(push(instance()), OneOrMore(attributeRules()), validate()));
+		return Optional(Sequence(push(instance()), ZeroOrMore(attributeRules()), validate()));
 	}
 
 	@SuppressWarnings("unchecked")
