@@ -52,6 +52,14 @@ public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonM
 		public Collection<DynamicAttribute> getDynamicAttributes() {
 			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
 		}
+		
+		public String concatDynamicAttributes() {
+			StringBuilder builder = new StringBuilder();
+			for (Attribute attribute : this.getDynamicAttributes()) {
+				builder.append(" ").append(attribute.toString());
+			}
+			return builder.toString();
+		}
 	}
 	
 }
