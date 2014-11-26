@@ -24,7 +24,12 @@
 		<dependency>
 			<groupId>com.lyncode</groupId>
 			<artifactId>jtwig-core</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lyncode</groupId>
+			<artifactId>jtwig-spring</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
