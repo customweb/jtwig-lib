@@ -26,20 +26,31 @@ public class DynamicAttributeDefinition extends AttributeDefinition {
 		return disallowedKeys;
 	}
 
-	public void addDisallowedKeys(Collection<String> disallowedKeys) {
+	public DynamicAttributeDefinition addDisallowedKeys(Collection<String> disallowedKeys) {
 		this.disallowedKeys.addAll(disallowedKeys);
+		return this;
 	}
 	
-	public void addDisallowedKey(String disallowedKey) {
+	public DynamicAttributeDefinition addDisallowedKeys(String... disallowedKeys) {
+		for (String disallowedKey : disallowedKeys) {
+			this.addDisallowedKey(disallowedKey);
+		}
+		return this;
+	}
+	
+	public DynamicAttributeDefinition addDisallowedKey(String disallowedKey) {
 		this.disallowedKeys.add(disallowedKey);
+		return this;
 	}
 	
-	public void resetDisallowedKeys() {
+	public DynamicAttributeDefinition resetDisallowedKeys() {
 		this.disallowedKeys.clear();
+		return this;
 	}
 	
-	public void removeDisallowedKey(String disallowedKey) {
+	public DynamicAttributeDefinition removeDisallowedKey(String disallowedKey) {
 		this.disallowedKeys.remove(disallowedKey);
+		return this;
 	}
 
 	@Override
