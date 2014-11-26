@@ -1,4 +1,4 @@
-package com.customweb.jtwig.lib;
+package com.customweb.jtwig.lib.attribute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 
-import com.customweb.jtwig.lib.model.AttributeDefinition;
-import com.customweb.jtwig.lib.model.AttributeModel;
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
 import com.lyncode.jtwig.addons.Addon;
 import com.lyncode.jtwig.expressions.model.Constant;
 import com.lyncode.jtwig.parser.config.ParserConfiguration;
@@ -15,7 +15,7 @@ import com.lyncode.jtwig.parser.model.JtwigSymbol;
 import com.lyncode.jtwig.parser.parboiled.JtwigBasicParser;
 import com.lyncode.jtwig.resource.JtwigResource;
 
-public abstract class AttributeAddon<T extends AttributeModel<T>> extends Addon {
+public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends Addon {
 
 	public AttributeAddon(JtwigResource resource, ParserConfiguration configuration) {
 		super(resource, configuration);

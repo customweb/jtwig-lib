@@ -1,8 +1,12 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model.definition;
 
 import org.parboiled.Rule;
 
-import com.customweb.jtwig.lib.AttributeAddon;
+import com.customweb.jtwig.lib.attribute.AttributeAddon;
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.Attribute;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.NamedAttribute;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 
 public class NamedAttributeDefinition extends AttributeDefinition {
@@ -31,12 +35,12 @@ public class NamedAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Rule getKeyRule(AttributeAddon<T> parser) {
+	public <T extends AbstractAttributeTag<T>> Rule getKeyRule(AttributeAddon<T> parser) {
 		return parser.IgnoreCase(this.getKey());
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
+	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
 			CompilableExpression value) {
 		return new NamedAttribute(key, value);
 	}

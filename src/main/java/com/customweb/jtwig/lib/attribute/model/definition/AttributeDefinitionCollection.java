@@ -1,4 +1,4 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model.definition;
 
 import java.util.HashMap;
 import java.util.Iterator;

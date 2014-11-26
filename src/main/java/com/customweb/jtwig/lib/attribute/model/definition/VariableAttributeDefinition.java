@@ -1,5 +1,9 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model.definition;
 
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.Attribute;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 
 public class VariableAttributeDefinition extends NamedAttributeDefinition {
@@ -18,7 +22,7 @@ public class VariableAttributeDefinition extends NamedAttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
+	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
 			CompilableExpression value) {
 		return new VariableAttribute(key, value);
 	}

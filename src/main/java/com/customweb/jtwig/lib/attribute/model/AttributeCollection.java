@@ -1,4 +1,4 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

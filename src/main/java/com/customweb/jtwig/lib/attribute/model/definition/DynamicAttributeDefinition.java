@@ -1,4 +1,4 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model.definition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,7 +6,11 @@ import java.util.Set;
 
 import org.parboiled.Rule;
 
-import com.customweb.jtwig.lib.AttributeAddon;
+import com.customweb.jtwig.lib.attribute.AttributeAddon;
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.Attribute;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.DynamicAttribute;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 
 public class DynamicAttributeDefinition extends AttributeDefinition {
@@ -63,12 +67,12 @@ public class DynamicAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Rule getKeyRule(AttributeAddon<T> parser) {
+	public <T extends AbstractAttributeTag<T>> Rule getKeyRule(AttributeAddon<T> parser) {
 		return parser.basicParser().identifier();
 	}
 
 	@Override
-	public <T extends AttributeModel<T>> Attribute getAttributeInstance(CompilableExpression key,
+	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
 			CompilableExpression value) {
 		return new DynamicAttribute(key, value);
 	}

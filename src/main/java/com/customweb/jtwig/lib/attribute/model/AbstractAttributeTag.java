@@ -1,15 +1,17 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model;
 
 import java.util.Collection;
 
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.lyncode.jtwig.addons.AddonModel;
 import com.lyncode.jtwig.content.api.Renderable;
 
-public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonModel<T> {
+public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AddonModel<T> {
 
 	private AttributeCollection attributeCollection;
 
-	public AttributeModel() {
+	public AbstractAttributeTag() {
 		this.attributeCollection = new AttributeCollection();
 	}
 
@@ -17,7 +19,7 @@ public abstract class AttributeModel<T extends AttributeModel<T>> extends AddonM
 		return this.attributeCollection;
 	}
 
-	public AttributeModel<T> validate() {
+	public AbstractAttributeTag<T> validate() {
 		for (AttributeDefinition definition : this.getAttributeDefinitions()) {
 			definition.validate(this.getAttributeCollection());
 		}

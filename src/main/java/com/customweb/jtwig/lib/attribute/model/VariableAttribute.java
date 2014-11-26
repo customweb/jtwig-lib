@@ -1,4 +1,4 @@
-package com.customweb.jtwig.lib.model;
+package com.customweb.jtwig.lib.attribute.model;
 
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 import com.lyncode.jtwig.render.RenderContext;
