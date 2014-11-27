@@ -1,11 +1,14 @@
 package com.customweb.jtwig.lib.attribute.model;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collection;
 
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.lyncode.jtwig.addons.AddonModel;
 import com.lyncode.jtwig.content.api.Renderable;
+import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.render.RenderContext;
 
 public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AddonModel<T> {
 
@@ -29,7 +32,7 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		return new AttributeDefinitionCollection();
 	}
-	
+
 	abstract protected class AbstractAttributeModelCompiled implements Renderable {
 		private final Renderable content;
 		private final AttributeCollection attributeCollection;
@@ -43,25 +46,49 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 			return this.content;
 		}
 		
+		public String renderContentAsString(RenderContext context) throws RenderException {
+			ByteArrayOutputStream contentRenderStream = new ByteArrayOutputStream();
+			this.getContent().render(context.newRenderContext(contentRenderStream));
+			return contentRenderStream.toString();
+		}
+
 		public AttributeCollection getAttributeCollection() {
 			return this.attributeCollection;
 		}
-		
+
 		public String getAttributeValue(String key) {
 			return this.getAttributeCollection().getValueAttribute(key).getValue();
 		}
-		
+
 		public Collection<DynamicAttribute> getDynamicAttributes() {
 			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
 		}
-		
-		public String concatDynamicAttributes() {
-			StringBuilder builder = new StringBuilder();
-			for (Attribute attribute : this.getDynamicAttributes()) {
-				builder.append(" ").append(attribute.toString());
-			}
-			return builder.toString();
+	}
+
+	abstract public class AbstractAttributeModelData {
+		private RenderContext context;
+		private AttributeCollection attributeCollection;
+
+		protected AbstractAttributeModelData(RenderContext context, AttributeCollection attributeCollection) {
+			this.context = context;
+			this.attributeCollection = attributeCollection;
+		}
+
+		protected RenderContext getContext() {
+			return this.context;
+		}
+
+		protected AttributeCollection getAttributeCollection() {
+			return attributeCollection;
+		}
+
+		protected String getAttributeValue(String key) {
+			return this.getAttributeCollection().getValueAttribute(key).getValue();
+		}
+
+		public Collection<DynamicAttribute> getDynamicAttributes() {
+			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
 		}
 	}
-	
+
 }

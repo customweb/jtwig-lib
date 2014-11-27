@@ -52,7 +52,9 @@ public class AttributeCollection {
 	}
 
 	public AttributeCollection addAttribute(Attribute attribute) {
-		attributes.put(attribute.getKey(), attribute);
+		if (attribute != null) {
+			attributes.put(attribute.getKey(), attribute);
+		}
 		return this;
 	}
 
