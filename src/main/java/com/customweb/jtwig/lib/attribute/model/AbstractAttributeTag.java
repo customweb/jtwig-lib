@@ -1,16 +1,14 @@
 package com.customweb.jtwig.lib.attribute.model;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Collection;
 
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.lyncode.jtwig.addons.AddonModel;
+import com.customweb.jtwig.lib.template.AbstractTemplateTag;
 import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AddonModel<T> {
+public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AbstractTemplateTag<T> {
 
 	private AttributeCollection attributeCollection;
 
@@ -33,23 +31,12 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 		return new AttributeDefinitionCollection();
 	}
 
-	abstract protected class AbstractAttributeModelCompiled implements Renderable {
-		private final Renderable content;
+	abstract protected class Compiled extends AbstractTemplateTag<T>.Compiled {
 		private final AttributeCollection attributeCollection;
 
-		protected AbstractAttributeModelCompiled(Renderable content, AttributeCollection attributeCollection) {
-			this.content = content;
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
+			super(block, content);
 			this.attributeCollection = attributeCollection;
-		}
-
-		public Renderable getContent() {
-			return this.content;
-		}
-		
-		public String renderContentAsString(RenderContext context) throws RenderException {
-			ByteArrayOutputStream contentRenderStream = new ByteArrayOutputStream();
-			this.getContent().render(context.newRenderContext(contentRenderStream));
-			return contentRenderStream.toString();
 		}
 
 		public AttributeCollection getAttributeCollection() {
@@ -65,17 +52,12 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 		}
 	}
 
-	abstract public class AbstractAttributeModelData {
-		private RenderContext context;
+	abstract public class Data extends AbstractTemplateTag<T>.Data {
 		private AttributeCollection attributeCollection;
 
-		protected AbstractAttributeModelData(RenderContext context, AttributeCollection attributeCollection) {
-			this.context = context;
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
+			super(context);
 			this.attributeCollection = attributeCollection;
-		}
-
-		protected RenderContext getContext() {
-			return this.context;
 		}
 
 		protected AttributeCollection getAttributeCollection() {
