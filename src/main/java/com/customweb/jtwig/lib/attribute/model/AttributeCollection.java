@@ -28,6 +28,7 @@ public class AttributeCollection {
 	}
 
 	public boolean hasAttribute(String key) {
+		key = key.toLowerCase();
 		return this.attributes.containsKey(key)
 				&& (this.attributes.get(key) instanceof EmptyAttribute || (this.getValueAttribute(key).getValue() != null && !this.getValueAttribute(key)
 						.getValue().isEmpty()));

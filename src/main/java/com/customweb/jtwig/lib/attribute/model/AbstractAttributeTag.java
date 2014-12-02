@@ -46,6 +46,14 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 		public String getAttributeValue(String key) {
 			return this.getAttributeCollection().getValueAttribute(key).getValue();
 		}
+		
+		public String getAttributeValue(String key, String defaultValue) {
+			if (this.getAttributeCollection().hasAttribute(key)) {
+				return this.getAttributeValue(key);
+			} else {
+				return defaultValue;
+			}
+		}
 
 		public Collection<DynamicAttribute> getDynamicAttributes() {
 			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
@@ -66,6 +74,14 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 
 		protected String getAttributeValue(String key) {
 			return this.getAttributeCollection().getValueAttribute(key).getValue();
+		}
+		
+		protected String getAttributeValue(String key, String defaultValue) {
+			if (this.getAttributeCollection().hasAttribute(key)) {
+				return this.getAttributeValue(key);
+			} else {
+				return defaultValue;
+			}
 		}
 
 		public Collection<DynamicAttribute> getDynamicAttributes() {
