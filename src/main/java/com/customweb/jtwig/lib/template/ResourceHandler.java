@@ -11,7 +11,7 @@ public final class ResourceHandler {
 	private List<IResourceResolver> resolvers = new ArrayList<IResourceResolver>();
 	
 	public ResourceHandler() {
-		this.addResolver(new DefaultResourceResolver());
+		this.reset();
 	}
 	
 	public JtwigResource resolve(String resourceName) throws ResourceException {
@@ -31,6 +31,11 @@ public final class ResourceHandler {
 	
 	public void removeResolver(IResourceResolver resolver) {
 		resolvers.remove(resolver);
+	}
+	
+	public void reset() {
+		resolvers.clear();
+		this.addResolver(new DefaultResourceResolver());
 	}
 
 }

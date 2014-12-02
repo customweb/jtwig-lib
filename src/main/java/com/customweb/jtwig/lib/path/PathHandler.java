@@ -10,7 +10,7 @@ public class PathHandler {
 	private List<IPathResolver> resolvers = new ArrayList<IPathResolver>();
 	
 	public PathHandler() {
-		this.addResolver(new DefaultPathResolver());
+		this.reset();
 	}
 	
 	public String resolve(String relativePath) throws ResourceException {
@@ -30,6 +30,11 @@ public class PathHandler {
 	
 	public void removeResolver(IPathResolver resolver) {
 		resolvers.remove(resolver);
+	}
+	
+	public void reset() {
+		resolvers.clear();
+		this.addResolver(new DefaultPathResolver());
 	}
 	
 }
