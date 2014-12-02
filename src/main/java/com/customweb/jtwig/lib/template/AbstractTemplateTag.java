@@ -6,6 +6,7 @@ import com.lyncode.jtwig.addons.AddonModel;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.types.Undefined;
 
 public abstract class AbstractTemplateTag<T extends AbstractTemplateTag<T>> extends AddonModel<T> {
 
@@ -38,9 +39,19 @@ public abstract class AbstractTemplateTag<T extends AbstractTemplateTag<T>> exte
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
-			this.prepareContext(context);
-			this.getBlock().render(context);
+			RenderContext isolatedContext = this.isolatedModel(context);
+			this.prepareContext(isolatedContext);
+			this.getBlock().render(isolatedContext);
+		}
+		
+		public RenderContext isolatedModel(RenderContext context) {
+			RenderContext isolatedContext = context.isolatedModel();
+			if (context.map("topContext") != null && !context.map("topContext").equals(Undefined.UNDEFINED)) {
+				isolatedContext.with("topContext", context.map("topContext"));
+			} else {
+				isolatedContext.with("topContext", context);
+			}
+			return isolatedContext;
 		}
 	}
 
