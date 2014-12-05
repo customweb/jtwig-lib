@@ -16,9 +16,12 @@ import com.lyncode.jtwig.parser.parboiled.JtwigBasicParser;
 import com.lyncode.jtwig.resource.JtwigResource;
 
 public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends Addon {
+	
+	private ParserConfiguration parserConfiguration;
 
 	public AttributeAddon(JtwigResource resource, ParserConfiguration configuration) {
 		super(resource, configuration);
+		this.parserConfiguration = configuration;
 	}
 
 	abstract protected String keyword();
@@ -31,6 +34,10 @@ public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends 
 	@Override
 	public java.lang.String endKeyword() {
 		return "end" + keyword();
+	}
+	
+	public ParserConfiguration parserConfiguration() {
+		return this.parserConfiguration;
 	}
 
 	@Override
@@ -65,9 +72,9 @@ public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends 
 								string(basicParser().symbol(JtwigSymbol.DOUBLE_QUOTE))),
 						expressionParser().push(new Constant<>(basicParser().pop())),
 						action(((T) expressionParser().peek(2)).getAttributeCollection().addAttribute(
-								definition.getAttributeInstance(expressionParser().pop(1), expressionParser().pop(0))))),
+								definition.getAttributeInstance(expressionParser().pop(1), expressionParser().pop(0), parserConfiguration())))),
 						action(((T) expressionParser().peek(1)).getAttributeCollection().addAttribute(
-								definition.getAttributeInstance(expressionParser().pop(0), null)))), basicParser()
+								definition.getAttributeInstance(expressionParser().pop(0), null, parserConfiguration())))), basicParser()
 						.spacing());
 	}
 

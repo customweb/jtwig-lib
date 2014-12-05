@@ -1,35 +1,45 @@
 package com.customweb.jtwig.lib.attribute.model;
 
+import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
+import com.lyncode.jtwig.parser.config.ParserConfiguration;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
 
 public class VariableAttribute extends ValueAttribute {
-	public VariableAttribute(CompilableExpression key, CompilableExpression value) {
-		super(key, value);
+	private Object variable;
+	
+	public VariableAttribute(CompilableExpression key, CompilableExpression value, ParserConfiguration configuration) {
+		super(key, value, configuration);
 	}
 
-	public VariableAttribute(String key, CompilableExpression value) {
-		super(key, value);
+	public VariableAttribute(String key, CompilableExpression value, ParserConfiguration configuration) {
+		super(key, value, configuration);
 	}
 	
 	public VariableAttribute(String key, String value) {
 		super(key, value);
 	}
 
-	public Object getVariable(RenderContext context) {
-		Object value = context.map(this.getValue());
-		if (value == null || value.equals(Undefined.UNDEFINED)) {
+	public Object getVariable() {
+		if (this.variable == null) {
 			throw new RuntimeException("The variable for attribute '" + this.getKey() + "' has not been set.");
 		}
-		return value;
+		return this.variable;
 	}
 	
-	public <T> T getVariable(RenderContext context, Class<T> type) {
-		Object value = this.getVariable(context);
-		if (!type.isInstance(value)) {
-			throw new RuntimeException("The variable for attribute '" + this.getKey() + "' is not of type " + type.getCanonicalName() + ".");
+	public <T> T getVariable(Class<T> type) {
+		return type.cast(this.getVariable());
+	}
+
+	@Override
+	public void render(RenderContext context) throws RenderException {
+		super.render(context);
+		
+		Object variable = context.map(this.getValue());
+		if (variable == null || variable.equals(Undefined.UNDEFINED)) {
+			throw new RuntimeException("The variable for attribute '" + this.getKey() + "' has not been set.");
 		}
-		return type.cast(value);
+		this.variable = variable;
 	}
 }

@@ -5,7 +5,10 @@ import java.util.Collection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.template.AbstractTemplateTag;
+import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
+import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
 public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AbstractTemplateTag<T> {
@@ -30,6 +33,12 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		return new AttributeDefinitionCollection();
 	}
+	
+	@Override
+    public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
+        return super.compile(context);
+    }
 
 	abstract protected class Compiled extends AbstractTemplateTag<T>.Compiled {
 		private final AttributeCollection attributeCollection;
@@ -58,6 +67,12 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 		public Collection<DynamicAttribute> getDynamicAttributes() {
 			return this.getAttributeCollection().getAttributes(DynamicAttribute.class);
 		}
+		
+		@Override
+		public void render(RenderContext context) throws RenderException {
+			this.getAttributeCollection().render(context);
+			super.render(context);
+		}
 	}
 
 	abstract public class Data extends AbstractTemplateTag<T>.Data {
@@ -76,7 +91,7 @@ public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> ex
 			return this.getAttributeCollection().getValueAttribute(key).getValue();
 		}
 		
-		protected String getAttributeValue(String key, String defaultValue) {
+		public String getAttributeValue(String key, String defaultValue) {
 			if (this.getAttributeCollection().hasAttribute(key)) {
 				return this.getAttributeValue(key);
 			} else {

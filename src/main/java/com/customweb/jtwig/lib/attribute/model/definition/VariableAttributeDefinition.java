@@ -5,6 +5,7 @@ import com.customweb.jtwig.lib.attribute.model.Attribute;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
+import com.lyncode.jtwig.parser.config.ParserConfiguration;
 
 public class VariableAttributeDefinition extends NamedAttributeDefinition {
 
@@ -23,8 +24,8 @@ public class VariableAttributeDefinition extends NamedAttributeDefinition {
 
 	@Override
 	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
-			CompilableExpression value) {
-		return new VariableAttribute(key, value);
+			CompilableExpression value, ParserConfiguration configuration) {
+		return new VariableAttribute(key, value, configuration);
 	}
 
 }

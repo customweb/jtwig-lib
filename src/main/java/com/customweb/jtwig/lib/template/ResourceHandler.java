@@ -7,35 +7,37 @@ import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.resource.JtwigResource;
 
 public final class ResourceHandler {
-	
+
 	private List<IResourceResolver> resolvers = new ArrayList<IResourceResolver>();
-	
+
 	public ResourceHandler() {
-		this.reset();
 	}
-	
+
 	public JtwigResource resolve(String resourceName) throws ResourceException {
 		for (IResourceResolver resolver : resolvers) {
 			try {
 				return resolver.resolve(resourceName);
-			} catch (ResourceException e) {}
+			} catch (ResourceException e) {
+			}
 		}
 		throw new ResourceException("Resource '" + resourceName + "' not found");
 	}
-	
-	public void addResolver(IResourceResolver resolver) {
+
+	public ResourceHandler addResolver(IResourceResolver resolver) {
 		if (!resolvers.contains(resolver)) {
 			resolvers.add(0, resolver);
 		}
+		return this;
 	}
-	
-	public void removeResolver(IResourceResolver resolver) {
+
+	public ResourceHandler removeResolver(IResourceResolver resolver) {
 		resolvers.remove(resolver);
+		return this;
 	}
-	
-	public void reset() {
+
+	public ResourceHandler reset() {
 		resolvers.clear();
-		this.addResolver(new DefaultResourceResolver());
+		return this;
 	}
 
 }

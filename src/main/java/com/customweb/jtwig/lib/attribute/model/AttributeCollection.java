@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.lyncode.jtwig.compile.CompileContext;
+import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.render.RenderContext;
+
 public class AttributeCollection {
 
 	Map<String, Attribute> attributes = new HashMap<String, Attribute>();
@@ -30,8 +35,7 @@ public class AttributeCollection {
 	public boolean hasAttribute(String key) {
 		key = key.toLowerCase();
 		return this.attributes.containsKey(key)
-				&& (this.attributes.get(key) instanceof EmptyAttribute || (this.getValueAttribute(key).getValue() != null && !this.getValueAttribute(key)
-						.getValue().isEmpty()));
+				&& this.attributes.get(key).isValid();
 	}
 
 	public boolean hasAttribute(String key, Class<?> type) {
@@ -57,6 +61,18 @@ public class AttributeCollection {
 			attributes.put(attribute.getKey(), attribute);
 		}
 		return this;
+	}
+	
+	public void compile(CompileContext context) throws CompileException {
+		for (Attribute attribute : this.getAttributes()) {
+			attribute.compile(context);
+		}
+	}
+	
+	public void render(RenderContext context) throws RenderException {
+		for (Attribute attribute : this.getAttributes()) {
+			attribute.render(context);
+		}
 	}
 
 }

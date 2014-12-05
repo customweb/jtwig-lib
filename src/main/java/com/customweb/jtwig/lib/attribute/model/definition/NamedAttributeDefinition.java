@@ -8,6 +8,7 @@ import com.customweb.jtwig.lib.attribute.model.Attribute;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.NamedAttribute;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
+import com.lyncode.jtwig.parser.config.ParserConfiguration;
 
 public class NamedAttributeDefinition extends AttributeDefinition {
 
@@ -27,8 +28,7 @@ public class NamedAttributeDefinition extends AttributeDefinition {
 		if (this.isMandatory()) {
 			if (!attributes.hasAttribute(this.getKey(), NamedAttribute.class)) {
 				throw new RuntimeException("The attribute '" + this.getKey() + "' is mandatory.");
-			} else if (attributes.getAttribute(this.getKey(), NamedAttribute.class).getValue() == null
-					|| attributes.getAttribute(this.getKey(), NamedAttribute.class).getValue().isEmpty()) {
+			} else if (!attributes.getAttribute(this.getKey(), NamedAttribute.class).isValid()) {
 				throw new RuntimeException("The value of the attribute '" + this.getKey() + "' has not been set.");
 			}
 		}
@@ -41,8 +41,8 @@ public class NamedAttributeDefinition extends AttributeDefinition {
 
 	@Override
 	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
-			CompilableExpression value) {
-		return new NamedAttribute(key, value);
+			CompilableExpression value, ParserConfiguration configuration) {
+		return new NamedAttribute(key, value, configuration);
 	}
 
 }
