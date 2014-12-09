@@ -85,5 +85,13 @@ public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends 
 				ZeroOrMore(Sequence(TestNot(delimiter), BaseParser.ANY,
 						basicParser().push(basicParser().pop() + match()))), delimiter);
 	}
+	
+	public Rule identifier() {
+		return Sequence(
+				TestNot(basicParser().anyKeyword()),
+				FirstOf(CharRange('a', 'z'), CharRange('A', 'Z'), '_'),
+                ZeroOrMore(FirstOf(CharRange('a', 'z'), CharRange('A', 'Z'), CharRange('0', '9'), '_', '-'))
+			);
+	}
 
 }

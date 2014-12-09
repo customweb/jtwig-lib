@@ -69,7 +69,7 @@ public class DynamicAttributeDefinition extends AttributeDefinition {
 
 	@Override
 	public <T extends AbstractAttributeTag<T>> Rule getKeyRule(AttributeAddon<T> parser) {
-		return parser.basicParser().identifier();
+		return parser.identifier();
 	}
 
 	@Override
