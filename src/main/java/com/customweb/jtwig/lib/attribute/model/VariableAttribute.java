@@ -1,11 +1,11 @@
 package com.customweb.jtwig.lib.attribute.model;
 
+import com.customweb.jtwig.lib.model.ObjectExtractor;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.expressions.api.CompilableExpression;
 import com.lyncode.jtwig.parser.config.ParserConfiguration;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
-import com.lyncode.jtwig.util.ObjectExtractor;
 import com.lyncode.jtwig.util.ObjectExtractor.ExtractException;
 
 public class VariableAttribute extends ValueAttribute {
@@ -57,9 +57,8 @@ public class VariableAttribute extends ValueAttribute {
 			throw new IllegalStateException("No target object for bean name '" + beanName + "' available as model map attribute.");
 		}
 		if (expression != null) {
-			ObjectExtractor extractor = new ObjectExtractor(target);
 			try {
-				variable = extractor.extract(expression);
+				variable = ObjectExtractor.extract(target, expression);
 			} catch (ExtractException e) {
 				throw new RenderException(e);
 			}
