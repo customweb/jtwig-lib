@@ -3,13 +3,31 @@ package com.customweb.jtwig.lib.template;
 import java.io.ByteArrayOutputStream;
 
 import com.lyncode.jtwig.addons.AddonModel;
+import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 import com.lyncode.jtwig.types.Undefined;
 
 public abstract class AbstractTemplateTag<T extends AbstractTemplateTag<T>> extends AddonModel<T> {
-
+	
+	protected final JtwigResource retrieveResource(CompileContext context, String viewUrl) throws ResourceException {
+		try {
+			JtwigResource resource = context.retrieve("tpl:" + viewUrl);
+			if (resource.exists()) {
+				return resource;
+			}
+		} catch (ResourceException e) {
+		}
+		JtwigResource resource = new DefaultAddonResourceResolver().resolve(viewUrl);
+		if (resource.exists()) {
+			return resource;
+		}
+		throw new ResourceException("Resource '" + viewUrl + "' not found");
+	}
+	
 	abstract protected class Compiled implements Renderable {
 		private final Renderable block;
 		private final Renderable content;
