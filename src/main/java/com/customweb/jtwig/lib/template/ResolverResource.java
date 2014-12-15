@@ -32,7 +32,7 @@ public class ResolverResource implements JtwigResource {
 		if (relativePath.startsWith("tpl:")) {
 			return new ResolverResource(this.resolver, this.resolver.resolve(relativePath.substring(4)));
 		} else {
-			return this.resource.resolve(relativePath);
+			return new ResolverResource(this.resolver, this.resource.resolve(relativePath));
 		}
 	}
 
