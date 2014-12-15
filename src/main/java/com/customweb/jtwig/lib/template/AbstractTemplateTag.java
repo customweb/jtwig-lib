@@ -18,12 +18,8 @@ public abstract class AbstractTemplateTag<T extends AbstractTemplateTag<T>> exte
 			JtwigResource resource = context.retrieve("tpl:" + viewUrl);
 			if (resource.exists()) {
 				return resource;
-			} else {
-				throw new ResourceException("");
 			}
-		} catch (ResourceException e) {
-			e.printStackTrace();
-		}
+		} catch (ResourceException e) {}
 		JtwigResource resource = new DefaultAddonResourceResolver().resolve(viewUrl);
 		if (resource.exists()) {
 			return resource;
