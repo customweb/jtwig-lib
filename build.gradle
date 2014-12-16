@@ -1,0 +1,32 @@
+// ====== Gradle Build Script for wallee-applications ======
+
+// ------ Plugins ------
+
+buildscript {
+  repositories {
+    maven { url 'http://localhost:32257/artifactory/repo/' }
+  }
+
+  dependencies {
+    classpath 'io.wallee:buildtools:0.1.0-141216133107'
+  }
+}
+
+apply plugin: 'io.wallee.single-java-project'
+
+
+// ------ Dependencies ------
+
+ext.jtwigVersion = '3.1.0'
+
+dependencies {
+  compile "com.lyncode:jtwig-core:${jtwigVersion}"
+  compile "com.lyncode:jtwig-spring:${jtwigVersion}"
+
+  compile "org.jsoup:jsoup:1.8.1"  
+  compile "commons-beanutils:commons-beanutils:1.9.2"
+  compile "org.reflections:reflections:0.9.9"
+  
+  testCompile "junit:junit:4.11"
+}
+
