@@ -1,6 +1,6 @@
-// ====== Gradle Build Script for wallee-applications ======
+// ====== Gradle Build Script for 'jtwig-lib' ======
 
-// ------ Plugins ------
+// ------ Wallee 'buildtools' Root Configuration ------
 
 buildscript {
   repositories {
