@@ -8,9 +8,12 @@ buildscript {
   }
 
   dependencies {
-    classpath 'io.wallee:buildtools:0.1.0-141216133107'
+    classpath 'io.wallee:buildtools:0.1.+'
   }
 }
+
+group = 'com.customweb'
+ext.buildVersion = '1.0.0'
 
 apply plugin: 'io.wallee.single-java-project'
 
