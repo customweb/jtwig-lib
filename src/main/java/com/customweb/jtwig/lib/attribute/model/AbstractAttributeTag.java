@@ -2,14 +2,15 @@ package com.customweb.jtwig.lib.attribute.model;
 
 import java.util.Collection;
 
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.render.RenderContext;
+
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.template.AbstractTemplateTag;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.render.RenderContext;
 
 public abstract class AbstractAttributeTag<T extends AbstractAttributeTag<T>> extends AbstractTemplateTag<T> {
 

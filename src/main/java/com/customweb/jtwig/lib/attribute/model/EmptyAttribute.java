@@ -1,6 +1,6 @@
 package com.customweb.jtwig.lib.attribute.model;
 
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
+import org.jtwig.expressions.api.CompilableExpression;
 
 public class EmptyAttribute extends Attribute {
 	public EmptyAttribute(CompilableExpression key) {

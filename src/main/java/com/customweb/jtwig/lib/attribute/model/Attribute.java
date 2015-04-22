@@ -1,11 +1,11 @@
 package com.customweb.jtwig.lib.attribute.model;
 
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.expressions.model.Constant;
-import com.lyncode.jtwig.render.RenderContext;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.expressions.api.CompilableExpression;
+import org.jtwig.expressions.model.Constant;
+import org.jtwig.render.RenderContext;
 
 abstract public class Attribute {
 	private String key;

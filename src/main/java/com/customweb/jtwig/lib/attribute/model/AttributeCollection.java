@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.render.RenderContext;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.render.RenderContext;
 
 public class AttributeCollection {
 

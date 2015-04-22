@@ -1,5 +1,7 @@
 package com.customweb.jtwig.lib.attribute.model.definition;
 
+import org.jtwig.Environment;
+import org.jtwig.expressions.api.CompilableExpression;
 import org.parboiled.Rule;
 
 import com.customweb.jtwig.lib.attribute.AttributeAddon;
@@ -7,8 +9,6 @@ import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
 import com.customweb.jtwig.lib.attribute.model.Attribute;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.NamedAttribute;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
 
 public class NamedAttributeDefinition extends AttributeDefinition {
 
@@ -41,8 +41,8 @@ public class NamedAttributeDefinition extends AttributeDefinition {
 
 	@Override
 	public <T extends AbstractAttributeTag<T>> Attribute getAttributeInstance(CompilableExpression key,
-			CompilableExpression value, ParserConfiguration configuration) {
-		return new NamedAttribute(key, value, configuration);
+			CompilableExpression value, Environment environment) {
+		return new NamedAttribute(key, value, environment);
 	}
 
 }

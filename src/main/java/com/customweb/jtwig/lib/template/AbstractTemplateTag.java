@@ -2,27 +2,29 @@ package com.customweb.jtwig.lib.template;
 
 import java.io.ByteArrayOutputStream;
 
-import com.lyncode.jtwig.addons.AddonModel;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
-import com.lyncode.jtwig.types.Undefined;
+import org.jtwig.addons.AddonModel;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.loader.impl.EmptyLoader;
+import org.jtwig.render.RenderContext;
+import org.jtwig.types.Undefined;
 
 public abstract class AbstractTemplateTag<T extends AbstractTemplateTag<T>> extends AddonModel<T> {
 	
-	protected final JtwigResource retrieveResource(CompileContext context, String viewUrl) throws ResourceException {
+	private final Loader defaultAddonLoader = new DefaultAddonLoader();
+	
+	protected final Loader.Resource retrieveResource(CompileContext context, String viewUrl) throws ResourceException {
 		try {
-			JtwigResource resource = context.retrieve("tpl:" + viewUrl);
-			if (resource.exists()) {
+			Loader.Resource resource = context.environment().load("tpl:" + viewUrl);
+			if (!(resource instanceof EmptyLoader.NoResource)) {
 				return resource;
 			}
 		} catch (ResourceException e) {}
-		JtwigResource resource = new DefaultAddonResourceResolver().resolve(viewUrl);
-		if (resource.exists()) {
-			return resource;
+		if (defaultAddonLoader.exists(viewUrl)) {
+			return defaultAddonLoader.get(viewUrl);
 		}
 		throw new ResourceException("Resource '" + viewUrl + "' not found");
 	}

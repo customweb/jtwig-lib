@@ -1,11 +1,11 @@
 package com.customweb.jtwig.lib.attribute.model;
 
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
+import org.jtwig.Environment;
+import org.jtwig.expressions.api.CompilableExpression;
 
 public class DynamicAttribute extends ValueAttribute {
-	public DynamicAttribute(CompilableExpression key, CompilableExpression value, ParserConfiguration configuration) {
-		super(key, value, configuration);
+	public DynamicAttribute(CompilableExpression key, CompilableExpression value, Environment environment) {
+		super(key, value, environment);
 	}
 	
 	public DynamicAttribute(String key, String value) {

@@ -3,25 +3,25 @@ package com.customweb.jtwig.lib.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jtwig.Environment;
+import org.jtwig.addons.Addon;
+import org.jtwig.expressions.model.Constant;
+import org.jtwig.loader.Loader;
+import org.jtwig.parser.model.JtwigSymbol;
+import org.jtwig.parser.parboiled.JtwigBasicParser;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 
 import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinition;
-import com.lyncode.jtwig.addons.Addon;
-import com.lyncode.jtwig.expressions.model.Constant;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.parser.model.JtwigSymbol;
-import com.lyncode.jtwig.parser.parboiled.JtwigBasicParser;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends Addon {
 	
-	private ParserConfiguration parserConfiguration;
+	private Environment environment;
 
-	public AttributeAddon(JtwigResource resource, ParserConfiguration configuration) {
-		super(resource, configuration);
-		this.parserConfiguration = configuration;
+	public AttributeAddon(Loader.Resource resource, Environment environment) {
+		super(resource, environment);
+		this.environment = environment;
 	}
 
 	abstract protected String keyword();
@@ -36,8 +36,8 @@ public abstract class AttributeAddon<T extends AbstractAttributeTag<T>> extends 
 		return "end" + keyword();
 	}
 	
-	public ParserConfiguration parserConfiguration() {
-		return this.parserConfiguration;
+	public Environment parserConfiguration() {
+		return this.environment;
 	}
 
 	@Override

@@ -1,22 +1,23 @@
 package com.customweb.jtwig.lib.attribute.model;
 
+import org.jtwig.Environment;
+import org.jtwig.exception.RenderException;
+import org.jtwig.expressions.api.CompilableExpression;
+import org.jtwig.render.RenderContext;
+import org.jtwig.types.Undefined;
+import org.jtwig.util.ObjectExtractor.ExtractException;
+
 import com.customweb.jtwig.lib.model.ObjectExtractor;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.types.Undefined;
-import com.lyncode.jtwig.util.ObjectExtractor.ExtractException;
 
 public class VariableAttribute extends ValueAttribute {
 	private Object variable;
 
-	public VariableAttribute(CompilableExpression key, CompilableExpression value, ParserConfiguration configuration) {
-		super(key, value, configuration);
+	public VariableAttribute(CompilableExpression key, CompilableExpression value, Environment environment) {
+		super(key, value, environment);
 	}
 
-	public VariableAttribute(String key, CompilableExpression value, ParserConfiguration configuration) {
-		super(key, value, configuration);
+	public VariableAttribute(String key, CompilableExpression value, Environment environment) {
+		super(key, value, environment);
 	}
 
 	public VariableAttribute(String key, String value) {

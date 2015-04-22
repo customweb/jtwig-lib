@@ -2,36 +2,36 @@ package com.customweb.jtwig.lib.attribute.model;
 
 import java.io.ByteArrayOutputStream;
 
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.expressions.model.Constant;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.parser.parboiled.JtwigContentParser;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.StringJtwigResource;
+import org.jtwig.Environment;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.expressions.api.CompilableExpression;
+import org.jtwig.expressions.model.Constant;
+import org.jtwig.loader.impl.StringLoader;
+import org.jtwig.render.RenderContext;
 
 abstract public class ValueAttribute extends Attribute {
-	private ParserConfiguration configuration;
+	private Environment environment;
 	
 	private String value;
 	private String compilableValue;
 	private Renderable renderableValue;
 
 	@SuppressWarnings("unchecked")
-	public ValueAttribute(CompilableExpression key, CompilableExpression value, ParserConfiguration configuration) {
+	public ValueAttribute(CompilableExpression key, CompilableExpression value, Environment environment) {
 		super(key);
-		this.configuration = configuration;
+		this.environment = environment;
 		this.compilableValue = ((Constant<String>) value).as(String.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public ValueAttribute(String key, CompilableExpression value, ParserConfiguration configuration) {
+	public ValueAttribute(String key, CompilableExpression value, Environment environment) {
 		super(key);
-		this.configuration = configuration;
+		this.environment = environment;
 		this.compilableValue = ((Constant<String>) value).as(String.class);
 	}
 
@@ -63,10 +63,10 @@ abstract public class ValueAttribute extends Attribute {
 		if (this.compilableValue == null && this.value == null) {
 			throw new CompileException("The value for attribute '" + this.getKey() + "' has not been set.");
 		} else if (this.compilableValue != null) {
-			StringJtwigResource resource = new StringJtwigResource(this.compilableValue);
+			StringLoader.StringResource resource = new StringLoader.StringResource(this.compilableValue);
 			try {
-				this.renderableValue = JtwigContentParser.parse(JtwigContentParser.newParser(resource, this.configuration), resource).compile(context);
-			} catch (ParseException e) {
+				this.renderableValue = this.environment.parse(resource).compile(context);
+			} catch (ParseException | ResourceException e) {
 				throw new CompileException(e);
 			}
 		}
